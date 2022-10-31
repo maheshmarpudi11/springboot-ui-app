@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +30,20 @@ import com.example.service.ProductService;
 @Validated
 public class ProductController {
 	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private ProductService productService;
 	
 	// Rest client - ARC, postman   // /product//newProduct
 	@PostMapping(value = "/newProduct", consumes = "application/json")
 	public ResponseEntity<String> createProduct(@Valid @RequestBody ProductDTO productDTO){
+		logger.info("ProductController -> createProduct : starts");
 		
-		System.out.println(productDTO);
+		//System.out.println(productDTO);
+		logger.info(productDTO.toString());
+		
+		
 		
 		
 		Integer productId = productService.createProduct(productDTO);
@@ -45,6 +53,7 @@ public class ProductController {
 		/*
 		 * if(true) { throw new NullPointerException("test"); }
 		 */
+		logger.info("ProductController -> createProduct : ends");
 		
 		return new ResponseEntity<String>(response,HttpStatus.CREATED);
 		
